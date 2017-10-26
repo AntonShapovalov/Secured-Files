@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- theme colors -->
+    <color name="colorPrimary">@color/grey_900</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
+    <color name="colorAccent">@color/green_a400</color>
+    <!-- palette colors -->
+    <color name="grey_900">#212121</color>
+    <color name="green_100">#C8E6C9</color>
+    <color name="green_300">#81C784</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="green_800">#2E7D32</color>
+    <color name="green_a100">#B9F6CA</color>
+    <color name="green_a200">#69F0AE</color>
+    <color name="green_a400">#00E676</color>
+    <color name="green_a700">#00C853</color>
+</resources>

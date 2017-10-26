@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Secured Files</string>
+
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="nav_item_doc">Documents</string>
+    <string name="nav_item_music">Music</string>
+    <string name="nav_item_pic">Pictures</string>
+    <string name="nav_item_video">Videos</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
