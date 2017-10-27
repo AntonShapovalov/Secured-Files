@@ -3,6 +3,8 @@ package ru.org.adons.securedfiles.ext
 import android.app.Activity
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import ru.org.adons.securedfiles.app.AppComponent
+import ru.org.adons.securedfiles.app.SFApplication
 
 /**
  * Extensions for [Activity]l
@@ -13,3 +15,5 @@ fun FragmentActivity.getFragment(tag: String): Fragment? = supportFragmentManage
 
 fun FragmentActivity.addFragment(containerId: Int, fragment: Fragment, tag: String) = supportFragmentManager
         .beginTransaction().add(containerId, fragment, tag).commit()
+
+val FragmentActivity.appComponent: AppComponent get() = (application as SFApplication).appComponent

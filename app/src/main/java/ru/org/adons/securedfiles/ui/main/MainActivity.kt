@@ -1,5 +1,7 @@
 package ru.org.adons.securedfiles.ui.main
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -10,27 +12,36 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.coordinator_main.*
 import ru.org.adons.securedfiles.R
-import ru.org.adons.securedfiles.ext.MAIN_FRAGMENT_TAG
-import ru.org.adons.securedfiles.ext.addFragment
-import ru.org.adons.securedfiles.ext.getFragment
+import ru.org.adons.securedfiles.ext.*
+import javax.inject.Inject
 
 /**
  * Main screen activity, manages navigation
  */
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    @Inject lateinit var factory: ViewModelFactory
+
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val toggle = ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close)
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
+        appComponent.inject(this)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        viewModel.title.observe(this, Observer { supportActionBar?.title = it })
+
+        ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close).also {
+            drawer.addDrawerListener(it)
+            it.syncState()
+        }
 
         navigationView.setNavigationItemSelectedListener(this)
         if (savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.nav_docs)
+            viewModel.setDefaultTitle()
             addFragment(R.id.fragment_container, getFragment(MAIN_FRAGMENT_TAG) ?: MainFragment(), MAIN_FRAGMENT_TAG)
         }
     }
@@ -59,17 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_docs -> {
-            }
-            R.id.nav_pictures -> {
-            }
-            R.id.nav_videos -> {
-            }
-            R.id.nav_music -> {
-            }
-        }
+        viewModel.onNavItemSelected(item.itemId)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }

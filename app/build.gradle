@@ -7,7 +7,6 @@ def ext = rootProject.ext
 
 android {
     compileSdkVersion ext.compileSdkVersion
-    buildToolsVersion ext.buildToolsVersion
     defaultConfig {
         applicationId "ru.org.adons.securedfiles"
         minSdkVersion ext.minSdkVersion
@@ -29,7 +28,7 @@ dependencies {
     // kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
     // architecture components
-    compile "android.arch.lifecycle:runtime:1.0.3"
+    compile "android.arch.lifecycle:runtime:$archLifecycleRuntime"
     compile "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
     // support library
