@@ -3,6 +3,7 @@ package ru.org.adons.securedfiles.app
 import android.content.Context
 import dagger.Component
 import ru.org.adons.securedfiles.ui.main.MainActivity
+import ru.org.adons.securedfiles.ui.main.MainFragment
 import javax.inject.Singleton
 
 /**
@@ -15,5 +16,7 @@ interface AppComponent {
     fun context(): Context
 
     fun inject(mainActivity: MainActivity)
+
+    fun inject(mainFragment: MainFragment)
 
 }
