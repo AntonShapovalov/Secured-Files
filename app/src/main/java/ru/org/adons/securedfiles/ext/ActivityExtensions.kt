@@ -8,9 +8,10 @@ import ru.org.adons.securedfiles.app.AppComponent
 import ru.org.adons.securedfiles.app.SFApplication
 
 /**
- * Extensions for [Activity]l
+ * Extensions for [Activity]
  */
 const val MAIN_FRAGMENT_TAG = "MAIN_FRAGMENT_TAG"
+const val EDIT_ACTIVITY_TITLE_KEY = "EDIT_ACTIVITY_TITLE_KEY"
 
 fun FragmentActivity.getFragment(tag: String): Fragment? = supportFragmentManager.findFragmentByTag(tag)
 

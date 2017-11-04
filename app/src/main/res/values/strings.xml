@@ -9,6 +9,10 @@
     <string name="nav_title_video">Videos</string>
 
     <string name="action_password">Password</string>
+    <string name="action_done">Done</string>
+
+    <string name="add_files_title">Add files</string>
+    <string name="edit_password_title">Edit password</string>
 
     <string name="error_message_files">Failed to load files</string>
 </resources>

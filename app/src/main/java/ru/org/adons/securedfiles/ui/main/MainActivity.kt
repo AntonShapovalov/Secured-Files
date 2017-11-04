@@ -2,6 +2,7 @@ package ru.org.adons.securedfiles.ui.main
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.coordinator_main.*
 import ru.org.adons.securedfiles.R
 import ru.org.adons.securedfiles.ext.*
+import ru.org.adons.securedfiles.ui.edit.EditActivity
 import javax.inject.Inject
 
 /**
@@ -44,6 +46,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             viewModel.setDefaultState()
             addFragment(R.id.fragment_container, getFragment(MAIN_FRAGMENT_TAG) ?: MainFragment(), MAIN_FRAGMENT_TAG)
         }
+
+        fab.setOnClickListener { startEditActivity(R.string.add_files_title) }
     }
 
     override fun onBackPressed() {
@@ -60,15 +64,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.action_password) true
-        else super.onOptionsItemSelected(item)
-
+        return if (item.itemId == R.id.action_password) {
+            startEditActivity(R.string.edit_password_title)
+            true
+        } else super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         viewModel.onNavItemSelected(item.itemId)
         drawer.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun startEditActivity(titleId: Int) {
+        val intent = Intent(this, EditActivity::class.java)
+        intent.putExtra(EDIT_ACTIVITY_TITLE_KEY, titleId)
+        startActivity(intent)
     }
 
 }

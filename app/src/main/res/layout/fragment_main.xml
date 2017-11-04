@@ -26,7 +26,7 @@
         <View
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="@drawable/ic_folder_open_white"/>
+            android:background="@drawable/ic_list_placeholder"/>
 
         <ProgressBar
             android:id="@android:id/progress"
