@@ -45,6 +45,7 @@ dependencies {
     compile "io.reactivex:rxjava:$rxJavaVersion"
     compile "com.trello:rxlifecycle:$rxLifeCycleVersion"
     compile "com.trello:rxlifecycle-components:$rxLifeCycleVersion"
+    compile "com.tbruyelle.rxpermissions:rxpermissions:$rxPermissionVersion"
     // dagger
     compile "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"

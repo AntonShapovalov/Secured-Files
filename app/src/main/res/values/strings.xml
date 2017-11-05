@@ -15,4 +15,5 @@
     <string name="edit_password_title">Edit password</string>
 
     <string name="error_message_files">Failed to load files</string>
+    <string name="error_permissions">Permissions Error</string>
 </resources>

@@ -11,7 +11,10 @@ import ru.org.adons.securedfiles.app.SFApplication
  * Extensions for [Activity]
  */
 const val MAIN_FRAGMENT_TAG = "MAIN_FRAGMENT_TAG"
+
 const val EDIT_ACTIVITY_TITLE_KEY = "EDIT_ACTIVITY_TITLE_KEY"
+const val ADD_FILES_FRAGMENT_TAG = "ADD_FILES_FRAGMENT_TAG"
+const val PASSWORD_FRAGMENT_TAG = "PASSWORD_FRAGMENT_TAG"
 
 fun FragmentActivity.getFragment(tag: String): Fragment? = supportFragmentManager.findFragmentByTag(tag)
 
@@ -22,8 +25,12 @@ val FragmentActivity.appComponent: AppComponent get() = (application as SFApplic
 
 fun Activity.showToast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-fun Fragment.showError(throwable: Throwable, messageId: Int, action: () -> Unit) {
+fun Activity.showError(throwable: Throwable, messageId: Int, action: () -> Unit) {
     action()
     throwable.printStackTrace()
-    activity?.showToast(throwable.message ?: getString(messageId))
+    showToast(throwable.message ?: getString(messageId))
+}
+
+fun Fragment.showError(throwable: Throwable, messageId: Int, action: () -> Unit) {
+    activity?.showError(throwable, messageId, action)
 }

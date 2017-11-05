@@ -56,7 +56,7 @@ class MainViewModel @Inject constructor() : ViewModel() {
 
     private fun loadFiles(path: String) {
         val s = Observable.just(path)
-                .map { context.getFiles(it) }
+                .map { context.getInternalFiles(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { state.value = StateProgress }

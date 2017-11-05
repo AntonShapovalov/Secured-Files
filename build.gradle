@@ -15,6 +15,7 @@ buildscript {
         rxAndroidVersion = '1.2.1'
         rxJavaVersion = '1.2.2'
         rxLifeCycleVersion = '1.0'
+        rxPermissionVersion = '0.9.3@aar'
         daggerVersion = '2.6'
     }
     repositories {
