@@ -13,7 +13,7 @@ const val PICTURES_PATH = "pic"
 const val VIDEOS_PATH = "video"
 
 fun Context.getInternalFiles(path: String): List<File> {
-    val dir = File(filesDir, path).also { it.mkdir() }
+    val dir = File(filesDir, path).also { if (!it.exists()) it.mkdir() }
     return dir.sortedList()
 }
 

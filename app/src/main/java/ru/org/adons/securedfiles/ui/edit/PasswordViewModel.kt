@@ -6,8 +6,7 @@ import javax.inject.Inject
 /**
  * Provides data for [PasswordFragment] and handles "Done" button click from [EditActivity]
  */
-class PasswordViewModel @Inject constructor() : ViewModel(), IEditViewModel {
-
+class PasswordViewModel @Inject constructor() : ViewModel(), EditViewModel {
 
     override fun done() {
         TODO("not implemented")

@@ -6,16 +6,18 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import ru.org.adons.securedfiles.R
 import ru.org.adons.securedfiles.ext.*
+import ru.org.adons.securedfiles.ui.base.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
+import java.io.File
 import javax.inject.Inject
 
 /**
  * Handles navigation drawer events from [MainActivity] and provides data for [MainFragment]
  */
-class MainViewModel @Inject constructor() : ViewModel() {
+class MainViewModel : ViewModel() {
 
     @SuppressLint("StaticFieldLeak")
     @Inject lateinit var context: Context
@@ -29,6 +31,9 @@ class MainViewModel @Inject constructor() : ViewModel() {
         if (title.value == null && state.value == StateIdle) onNavItemSelected(R.string.nav_title_doc)
     }
 
+    /**
+     * Navigation Drawer item selected in [MainActivity]
+     */
     fun onNavItemSelected(navId: Int) {
         val titleId: Int
         val path: String
@@ -54,13 +59,17 @@ class MainViewModel @Inject constructor() : ViewModel() {
         loadFiles(path)
     }
 
+    /**
+     * Load files from selected directory and notify [MainFragment]
+     */
     private fun loadFiles(path: String) {
         val s = Observable.just(path)
                 .map { context.getInternalFiles(it) }
+                .map { it.map { InternalItem(it) } }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { state.value = StateProgress }
-                .subscribe({ state.value = FilesLoaded(it) }, { state.value = StateError(it) })
+                .subscribe({ state.value = InternalFilesLoaded(it) }, { state.value = StateError(it) })
         subscriptions.add(s)
     }
 
@@ -70,3 +79,5 @@ class MainViewModel @Inject constructor() : ViewModel() {
     }
 
 }
+
+class InternalItem(override val file: File, val isLoaded: Boolean = true) : FileItem

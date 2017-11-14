@@ -14,15 +14,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.coordinator_main.*
 import ru.org.adons.securedfiles.R
 import ru.org.adons.securedfiles.ext.*
+import ru.org.adons.securedfiles.ui.base.ViewModelFactory
 import ru.org.adons.securedfiles.ui.edit.EditActivity
-import javax.inject.Inject
 
 /**
  * Main screen activity, manages navigation
  */
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    @Inject lateinit var factory: ViewModelFactory
 
     private lateinit var viewModel: MainViewModel
 
@@ -31,9 +29,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        appComponent.inject(this)
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-        viewModel.title.observe(this, Observer { supportActionBar?.title = it })
+        viewModel = ViewModelProviders.of(this, ViewModelFactory())
+                .get(MainViewModel::class.java)
+                .also { appComponent.inject(it) }
+                .also { it.title.observe(this, Observer { supportActionBar?.title = it }) }
 
         ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close).also {
             drawer.addDrawerListener(it)
