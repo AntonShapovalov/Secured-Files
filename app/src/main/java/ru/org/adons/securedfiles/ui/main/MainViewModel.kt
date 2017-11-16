@@ -70,15 +70,20 @@ class MainViewModel : ViewModel() {
      */
     private fun loadFiles() {
         val queueItems = Observable.fromCallable { fileManager.getQueueItems(dir) }
-                .doOnNext { log("queueItems -->");it.forEach { log("file=${it.file.name},${it.loadState.javaClass.simpleName}") } }
+                .doOnNext { logItems("queueItems", it) }
         val internalItems = Observable.fromCallable { context.getInternalFiles(dir).map { InternalItem(it, dir) } }
-                .doOnNext { log("internalItems -->");it.forEach { log("file=${it.file.name},${it.loadState.javaClass.simpleName}") } }
-        val s = queueItems.concatWith(internalItems)
+                .doOnNext { logItems("internalItems", it) }
+        val s = Observable.zip(queueItems, internalItems, { q, i -> q.toMutableList().apply { addAll(i) }.toList() })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { state.value = StateProgress }
                 .subscribe({ state.value = InternalFilesLoaded(it) }, { state.value = StateError(it) })
         subscriptions.add(s)
+    }
+
+    private fun logItems(title: String, items: List<InternalItem>) {
+        log("$title -->")
+        items.forEach { log("file=${it.file.name},${it.loadState.javaClass.simpleName}") }
     }
 
     override fun onCleared() {

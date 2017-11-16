@@ -35,7 +35,7 @@ class FileManager @Inject constructor() {
         Observable.from(items)
                 .doOnSubscribe { addToQueue(items, dir) }
                 .doOnNext { it.loadState = it.file.tryCopyTo(context.internalDir(dir)) }
-//                .doOnNext { if (it.loadState is ItemLoadSuccess) removeFromQueue(it) }
+                .doOnNext { if (it.loadState is ItemLoadSuccess) removeFromQueue(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ queueSubject.onNext(dir) }, { it.printStackTrace(); removeAllFromQueue(items) })

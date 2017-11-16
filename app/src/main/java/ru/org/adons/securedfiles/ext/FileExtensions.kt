@@ -34,9 +34,13 @@ fun File.tryCopyTo(destDir: File): ItemLoadState {
         log("copied file $name (${length() / 1024} KB) into ${destDir.name}")
         ItemLoadSuccess
     } catch (e: Exception) {
-        e.printStackTrace()
-        if (destFile.exists()) destFile.delete()
-        ItemLoadError(e.message ?: "Unable copy file $name")
+        if (e is FileAlreadyExistsException) {
+            ItemLoadSuccess
+        } else {
+            e.printStackTrace()
+            if (destFile.exists()) destFile.delete()
+            ItemLoadError(e.message ?: "Unable copy file $name")
+        }
     }
 }
 
