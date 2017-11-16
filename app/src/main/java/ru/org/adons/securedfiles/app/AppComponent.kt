@@ -2,6 +2,7 @@ package ru.org.adons.securedfiles.app
 
 import android.content.Context
 import dagger.Component
+import ru.org.adons.securedfiles.file.FileManager
 import ru.org.adons.securedfiles.ui.edit.AddViewModel
 import ru.org.adons.securedfiles.ui.main.MainViewModel
 import javax.inject.Singleton
@@ -14,6 +15,8 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun context(): Context
+
+    fun fileManager(): FileManager
 
     fun inject(mainViewModel: MainViewModel)
 

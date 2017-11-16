@@ -1,19 +1,26 @@
 package ru.org.adons.securedfiles.ui.edit
 
 import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
+import ru.org.adons.securedfiles.ext.DOCUMENTS_DIR
 import ru.org.adons.securedfiles.ext.getDownloadFiles
-import ru.org.adons.securedfiles.ext.log
+import ru.org.adons.securedfiles.file.FileManager
 import ru.org.adons.securedfiles.ui.base.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 import java.io.File
+import javax.inject.Inject
 
 /**
  * Provides data for [AddFragment] and handles "Done" button click from [EditActivity]
+ *
+ * @param dir - target internal directory to copy files into
  */
-class AddViewModel : ViewModel(), EditViewModel {
+class AddViewModel(private val dir: String) : ViewModel(), EditViewModel {
+
+    @Inject lateinit var fileManager: FileManager
 
     val state = StateLiveData()
 
@@ -49,7 +56,7 @@ class AddViewModel : ViewModel(), EditViewModel {
      * [EditActivity] "Done" action bar button click
      */
     override fun done() {
-        checkedItems.values.forEach { log(it.file.name) }
+        fileManager.copyFromDownloads(checkedItems.values.toSet(), dir)
     }
 
     override fun onCleared() {
@@ -60,3 +67,8 @@ class AddViewModel : ViewModel(), EditViewModel {
 }
 
 class DownloadItem(override val file: File, var isChecked: Boolean = false) : FileItem
+
+@Suppress("UNCHECKED_CAST")
+class AddViewModelFactory(private val dir: String = DOCUMENTS_DIR) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = AddViewModel(dir) as T
+}

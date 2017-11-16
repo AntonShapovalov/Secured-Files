@@ -5,7 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import ru.org.adons.securedfiles.ext.appComponent
 import ru.org.adons.securedfiles.ext.log
-import ru.org.adons.securedfiles.ui.base.*
+import ru.org.adons.securedfiles.ui.base.FileListAdapter
+import ru.org.adons.securedfiles.ui.base.FileListFragment
+import ru.org.adons.securedfiles.ui.base.InternalFilesLoaded
+import ru.org.adons.securedfiles.ui.base.ViewModelState
 import java.io.File
 
 /**
@@ -20,7 +23,7 @@ class MainFragment : FileListFragment<InternalItem>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val act = activity ?: return
-        viewModel = ViewModelProviders.of(act, ViewModelFactory())
+        viewModel = ViewModelProviders.of(act)
                 .get(MainViewModel::class.java)
                 .also { act.appComponent.inject(it) }
                 .also { it.state.observe(this, Observer { onStateChanged(it) }) }

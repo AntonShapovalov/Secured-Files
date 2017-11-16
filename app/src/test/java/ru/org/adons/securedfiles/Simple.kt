@@ -1,9 +1,7 @@
 package ru.org.adons.securedfiles
 
-import org.junit.Assert.assertEquals
 import org.junit.Test
-import ru.org.adons.securedfiles.ui.edit.DownloadItem
-import java.io.File
+import rx.Observable
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -14,13 +12,9 @@ class Simple {
     @Test
     @Throws(Exception::class)
     fun test() {
-        val i1 = DownloadItem(File("/data/data/i1"))
-        val i2 = DownloadItem(File("/data/data/i2"))
-        val set = HashSet<DownloadItem>()
-        set.add(i1)
-        set.add(i2)
-        set.remove(i1)
-        assertEquals(1, set.size)
+        val list1 = Observable.just(listOf(1, 2, 3))
+        val list2 = Observable.just(listOf(7, 8, 9))
+        list1.concatWith(list2).subscribe { it.forEach { println(it) } }
     }
 
 }

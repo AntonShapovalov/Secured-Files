@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.coordinator_main.*
 import ru.org.adons.securedfiles.R
 import ru.org.adons.securedfiles.ext.*
-import ru.org.adons.securedfiles.ui.base.ViewModelFactory
 import ru.org.adons.securedfiles.ui.edit.EditActivity
 
 /**
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this, ViewModelFactory())
+        viewModel = ViewModelProviders.of(this)
                 .get(MainViewModel::class.java)
                 .also { appComponent.inject(it) }
                 .also { it.title.observe(this, Observer { supportActionBar?.title = it }) }
@@ -78,6 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun startEditActivity(titleId: Int) {
         val intent = Intent(this, EditActivity::class.java)
         intent.putExtra(EDIT_ACTIVITY_TITLE_KEY, titleId)
+        intent.putExtra(EDIT_ACTIVITY_DIR_KEY, viewModel.dir)
         startActivity(intent)
     }
 

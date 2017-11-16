@@ -10,12 +10,11 @@ import android.view.MenuItem
 import com.tbruyelle.rxpermissions.RxPermissions
 import ru.org.adons.securedfiles.R
 import ru.org.adons.securedfiles.ext.*
-import ru.org.adons.securedfiles.ui.base.ViewModelFactory
 import rx.android.schedulers.AndroidSchedulers
 
 class EditActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: AddViewModel
+    private lateinit var viewModel: EditViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,19 +40,17 @@ class EditActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
-            R.id.action_done -> {
-                viewModel.done()
-                finish()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        android.R.id.home -> {
+            finish()
+            true
         }
+        R.id.action_done -> {
+            viewModel.done()
+            finish()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun onPermissionSuccess(isGranted: Boolean, savedInstanceState: Bundle?) {
@@ -77,9 +74,14 @@ class EditActivity : AppCompatActivity() {
             }
             addFragment(R.id.fragment_container, fragment, tag)
         }
-        viewModel = ViewModelProviders.of(this, ViewModelFactory())
-                .get(AddViewModel::class.java)
-                .also { appComponent.inject(it) }
+        viewModel = if (titleId == R.string.add_files_title) {
+            val dir = intent.getStringExtra(EDIT_ACTIVITY_DIR_KEY) ?: DOCUMENTS_DIR
+            ViewModelProviders.of(this, AddViewModelFactory(dir))
+                    .get(AddViewModel::class.java)
+                    .also { appComponent.inject(it) }
+        } else {
+            ViewModelProviders.of(this).get(PasswordViewModel::class.java)
+        }
     }
 
 }

@@ -2,10 +2,12 @@ package ru.org.adons.securedfiles.ui.main
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.list_item_internal_file.view.*
 import ru.org.adons.securedfiles.R
+import ru.org.adons.securedfiles.ext.empty
+import ru.org.adons.securedfiles.ext.placeholder
+import ru.org.adons.securedfiles.ext.progress
 import ru.org.adons.securedfiles.ui.base.FileListAdapter
 
 /**
@@ -22,7 +24,11 @@ class MainListAdapter(onItemClick: (InternalItem) -> Unit) : FileListAdapter<Int
         val item = items[position]
         val file = item.file
         val view = holder.itemView
-        view.progress.visibility = if (item.isLoaded) View.GONE else View.VISIBLE
+        when (item.loadState) {
+            is ItemLoadError -> view.flipper.placeholder() // show error icon
+            is ItemLoadProgress -> view.flipper.progress()
+            else -> view.flipper.empty()
+        }
         view.textName.text = file.name
         view.textDate.text = DateUtils.getRelativeTimeSpanString(file.lastModified())
         view.setOnClickListener { onItemClick(item) }

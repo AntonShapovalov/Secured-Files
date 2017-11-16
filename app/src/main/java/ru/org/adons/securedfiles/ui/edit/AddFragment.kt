@@ -4,7 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import ru.org.adons.securedfiles.ext.appComponent
-import ru.org.adons.securedfiles.ui.base.*
+import ru.org.adons.securedfiles.ui.base.DownloadFilesLoaded
+import ru.org.adons.securedfiles.ui.base.FileListAdapter
+import ru.org.adons.securedfiles.ui.base.FileListFragment
+import ru.org.adons.securedfiles.ui.base.ViewModelState
 
 /**
  * Add files screen, display list of files from Downloads directory
@@ -18,7 +21,7 @@ class AddFragment : FileListFragment<DownloadItem>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val act = activity ?: return
-        viewModel = ViewModelProviders.of(act, ViewModelFactory())
+        viewModel = ViewModelProviders.of(act, AddViewModelFactory())
                 .get(AddViewModel::class.java)
                 .also { act.appComponent.inject(it) }
                 .also { it.state.observe(this, Observer { onStateChanged(it) }) }

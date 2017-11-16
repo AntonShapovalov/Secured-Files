@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import android.content.Context
 import ru.org.adons.securedfiles.R
 import ru.org.adons.securedfiles.ext.*
+import ru.org.adons.securedfiles.file.FileManager
 import ru.org.adons.securedfiles.ui.base.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -21,14 +22,20 @@ class MainViewModel : ViewModel() {
 
     @SuppressLint("StaticFieldLeak")
     @Inject lateinit var context: Context
+    @Inject lateinit var fileManager: FileManager
 
     val title = MutableLiveData<String>()
+    var dir = DOCUMENTS_DIR
     val state = StateLiveData()
 
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
     fun setDefaultState() {
         if (title.value == null && state.value == StateIdle) onNavItemSelected(R.string.nav_title_doc)
+        val s = fileManager.queueSubject.filter { it == dir }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ loadFiles() }, { it.printStackTrace() })
+        subscriptions.add(s)
     }
 
     /**
@@ -36,36 +43,37 @@ class MainViewModel : ViewModel() {
      */
     fun onNavItemSelected(navId: Int) {
         val titleId: Int
-        val path: String
         when (navId) {
             R.id.nav_music -> {
                 titleId = R.string.nav_title_music
-                path = MUSIC_PATH
+                dir = MUSIC_DIR
             }
             R.id.nav_pictures -> {
                 titleId = R.string.nav_title_pic
-                path = PICTURES_PATH
+                dir = PICTURES_DIR
             }
             R.id.nav_videos -> {
                 titleId = R.string.nav_title_video
-                path = VIDEOS_PATH
+                dir = VIDEOS_DIR
             }
             else -> {
                 titleId = R.string.nav_title_doc
-                path = DOCUMENTS_PATH
+                dir = DOCUMENTS_DIR
             }
         }
         title.value = context.getString(titleId)
-        loadFiles(path)
+        loadFiles()
     }
 
     /**
      * Load files from selected directory and notify [MainFragment]
      */
-    private fun loadFiles(path: String) {
-        val s = Observable.just(path)
-                .map { context.getInternalFiles(it) }
-                .map { it.map { InternalItem(it) } }
+    private fun loadFiles() {
+        val queueItems = Observable.fromCallable { fileManager.getQueueItems(dir) }
+                .doOnNext { log("queueItems -->");it.forEach { log("file=${it.file.name},${it.loadState.javaClass.simpleName}") } }
+        val internalItems = Observable.fromCallable { context.getInternalFiles(dir).map { InternalItem(it, dir) } }
+                .doOnNext { log("internalItems -->");it.forEach { log("file=${it.file.name},${it.loadState.javaClass.simpleName}") } }
+        val s = queueItems.concatWith(internalItems)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { state.value = StateProgress }
@@ -80,4 +88,9 @@ class MainViewModel : ViewModel() {
 
 }
 
-class InternalItem(override val file: File, val isLoaded: Boolean = true) : FileItem
+class InternalItem(override val file: File, val dir: String, var loadState: ItemLoadState = ItemLoadSuccess) : FileItem
+
+sealed class ItemLoadState
+object ItemLoadSuccess : ItemLoadState()
+object ItemLoadProgress : ItemLoadState()
+data class ItemLoadError(val message: String) : ItemLoadState()
