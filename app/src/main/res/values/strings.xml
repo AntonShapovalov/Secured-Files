@@ -1,19 +1,19 @@
 <resources>
     <string name="app_name">Secured Files</string>
-
+    <!-- main activity -->
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
     <string name="nav_title_doc">Documents</string>
     <string name="nav_title_music">Music</string>
     <string name="nav_title_pic">Pictures</string>
     <string name="nav_title_video">Videos</string>
-
-    <string name="action_password">Password</string>
+    <string name="action_change_password">Change password</string>
     <string name="action_done">Done</string>
-
-    <string name="add_files_title">Add files</string>
-    <string name="edit_password_title">Edit password</string>
-
+    <!-- add activity -->
+    <string name="add_activity_title">Add files</string>
+    <!-- password activity -->
+    <string name="password_activity_title">Change password</string>
+    <!-- error messages -->
     <string name="error_message_files">Failed to load files</string>
     <string name="error_permissions">Permissions Error</string>
 </resources>
