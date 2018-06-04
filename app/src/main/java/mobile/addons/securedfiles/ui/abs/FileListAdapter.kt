@@ -1,4 +1,4 @@
-package mobile.addons.securedfiles.ui.base
+package mobile.addons.securedfiles.ui.abs
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

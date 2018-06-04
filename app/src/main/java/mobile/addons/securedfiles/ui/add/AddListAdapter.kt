@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import kotlinx.android.synthetic.main.list_item_download_file.view.*
 import mobile.addons.securedfiles.R
-import mobile.addons.securedfiles.ui.base.FileListAdapter
+import mobile.addons.securedfiles.ui.abs.FileListAdapter
 
 /**
  * Recycler adapter for File List in [AddFragment]

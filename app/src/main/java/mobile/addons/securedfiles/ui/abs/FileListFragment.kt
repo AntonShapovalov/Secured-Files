@@ -1,4 +1,4 @@
-package mobile.addons.securedfiles.ui.base
+package mobile.addons.securedfiles.ui.abs
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

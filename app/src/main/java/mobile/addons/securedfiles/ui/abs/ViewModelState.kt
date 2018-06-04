@@ -1,4 +1,4 @@
-package mobile.addons.securedfiles.ui.base
+package mobile.addons.securedfiles.ui.abs
 
 import android.arch.lifecycle.MutableLiveData
 import mobile.addons.securedfiles.ui.add.DownloadItem
@@ -16,6 +16,8 @@ data class StateError(val throwable: Throwable) : ViewModelState()
 
 data class InternalFilesLoaded(val files: List<InternalItem>) : ViewModelState()
 data class DownloadFilesLoaded(val files: List<DownloadItem>) : ViewModelState()
+
+object PasswordIsCorrect : ViewModelState()
 
 /**
  * ViewModelState LiveData - to init default state value

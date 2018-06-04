@@ -5,6 +5,7 @@ import dagger.Component
 import mobile.addons.securedfiles.file.FileManager
 import mobile.addons.securedfiles.ui.add.AddViewModel
 import mobile.addons.securedfiles.ui.main.MainViewModel
+import mobile.addons.securedfiles.ui.pass.PasswordViewModel
 import javax.inject.Singleton
 
 /**
@@ -17,6 +18,8 @@ interface AppComponent {
     fun context(): Context
 
     fun fileManager(): FileManager
+
+    fun inject(passViewModel: PasswordViewModel)
 
     fun inject(mainViewModel: MainViewModel)
 

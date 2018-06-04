@@ -13,6 +13,7 @@
     <string name="add_activity_title">Add files</string>
     <!-- password activity -->
     <string name="password_activity_title">Change password</string>
+    <string name="password_fragment_hint">Password</string>
     <!-- error messages -->
     <string name="error_message_files">Failed to load files</string>
     <string name="error_permissions">Permissions Error</string>

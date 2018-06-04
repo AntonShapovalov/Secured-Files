@@ -7,7 +7,7 @@ import android.content.Context
 import mobile.addons.securedfiles.R
 import mobile.addons.securedfiles.ext.*
 import mobile.addons.securedfiles.file.FileManager
-import mobile.addons.securedfiles.ui.base.*
+import mobile.addons.securedfiles.ui.abs.*
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers

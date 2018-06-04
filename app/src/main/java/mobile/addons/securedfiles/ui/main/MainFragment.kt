@@ -5,10 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import mobile.addons.securedfiles.ext.appComponent
 import mobile.addons.securedfiles.ext.log
-import mobile.addons.securedfiles.ui.base.FileListAdapter
-import mobile.addons.securedfiles.ui.base.FileListFragment
-import mobile.addons.securedfiles.ui.base.InternalFilesLoaded
-import mobile.addons.securedfiles.ui.base.ViewModelState
+import mobile.addons.securedfiles.ui.abs.FileListAdapter
+import mobile.addons.securedfiles.ui.abs.FileListFragment
+import mobile.addons.securedfiles.ui.abs.InternalFilesLoaded
+import mobile.addons.securedfiles.ui.abs.ViewModelState
 import java.io.File
 
 /**

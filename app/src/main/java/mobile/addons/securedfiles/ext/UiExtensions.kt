@@ -3,6 +3,7 @@ package mobile.addons.securedfiles.ext
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.View
 import android.widget.ViewFlipper
 import mobile.addons.securedfiles.BuildConfig
 
@@ -17,15 +18,17 @@ fun log(message: String, tag: String = "LOG") {
     }
 }
 
-fun RecyclerView.initList(adapter: RecyclerView.Adapter<*>) {
-    val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-    layoutManager.isSmoothScrollbarEnabled = true
-    this.layoutManager = layoutManager
-    this.adapter = adapter
-}
+fun View.gone() = let { visibility = View.GONE }
 
 fun ViewFlipper.placeholder() = let { displayedChild = 0 } // show empty dir placeholder
 
 fun ViewFlipper.progress() = let { displayedChild = 1 } // show progress
 
 fun ViewFlipper.empty() = let { displayedChild = 2 } // hide all when list loaded
+
+fun RecyclerView.initList(adapter: RecyclerView.Adapter<*>) {
+    val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    layoutManager.isSmoothScrollbarEnabled = true
+    this.layoutManager = layoutManager
+    this.adapter = adapter
+}

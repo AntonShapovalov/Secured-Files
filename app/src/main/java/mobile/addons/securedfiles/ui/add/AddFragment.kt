@@ -4,10 +4,10 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import mobile.addons.securedfiles.ext.appComponent
-import mobile.addons.securedfiles.ui.base.DownloadFilesLoaded
-import mobile.addons.securedfiles.ui.base.FileListAdapter
-import mobile.addons.securedfiles.ui.base.FileListFragment
-import mobile.addons.securedfiles.ui.base.ViewModelState
+import mobile.addons.securedfiles.ui.abs.DownloadFilesLoaded
+import mobile.addons.securedfiles.ui.abs.FileListAdapter
+import mobile.addons.securedfiles.ui.abs.FileListFragment
+import mobile.addons.securedfiles.ui.abs.ViewModelState
 
 /**
  * Add files screen, display list of files from Downloads directory

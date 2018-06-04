@@ -8,7 +8,7 @@ import mobile.addons.securedfiles.R
 import mobile.addons.securedfiles.ext.empty
 import mobile.addons.securedfiles.ext.placeholder
 import mobile.addons.securedfiles.ext.progress
-import mobile.addons.securedfiles.ui.base.FileListAdapter
+import mobile.addons.securedfiles.ui.abs.FileListAdapter
 
 /**
  * Recycler adapter for File List in [MainFragment]

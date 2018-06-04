@@ -11,6 +11,7 @@ import mobile.addons.securedfiles.R
 import mobile.addons.securedfiles.ext.PASSWORD_FRAGMENT_TAG
 import mobile.addons.securedfiles.ext.addFragment
 import mobile.addons.securedfiles.ext.getFragment
+import mobile.addons.securedfiles.ext.gone
 
 class PasswordActivity : AppCompatActivity() {
 
@@ -28,7 +29,11 @@ class PasswordActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_password)
-        if (intent.getBooleanExtra(SHOW_TOOLBAR_KEY, false)) setSupportActionBar(toolbar)
+        if (intent.getBooleanExtra(SHOW_TOOLBAR_KEY, false)) {
+            setSupportActionBar(toolbar)
+        } else {
+            appbar.gone()
+        }
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setTitle(R.string.password_activity_title)
