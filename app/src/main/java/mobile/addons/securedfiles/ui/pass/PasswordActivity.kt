@@ -8,10 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_password.*
 import mobile.addons.securedfiles.R
-import mobile.addons.securedfiles.ext.PASSWORD_FRAGMENT_TAG
-import mobile.addons.securedfiles.ext.addFragment
-import mobile.addons.securedfiles.ext.getFragment
-import mobile.addons.securedfiles.ext.gone
+import mobile.addons.securedfiles.ext.*
 
 class PasswordActivity : AppCompatActivity() {
 
