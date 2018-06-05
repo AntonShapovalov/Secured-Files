@@ -10,9 +10,8 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_password.*
 import mobile.addons.securedfiles.R
 import mobile.addons.securedfiles.ext.appComponent
-import mobile.addons.securedfiles.ext.log
-import mobile.addons.securedfiles.ui.abs.PasswordIsCorrect
-import mobile.addons.securedfiles.ui.abs.ViewModelState
+import mobile.addons.securedfiles.ext.visibilityCondition
+import mobile.addons.securedfiles.ui.abs.*
 import mobile.addons.securedfiles.ui.main.MainActivity
 
 /**
@@ -28,6 +27,7 @@ class PasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         buttonOk.setOnClickListener { viewModel.getPasswordState(editTextPassword.text.toString().toCharArray()) }
+        editTextPassword.addTextChangedListener(PasswordTextWatcher(textLayoutPassword))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -36,12 +36,24 @@ class PasswordFragment : Fragment() {
         viewModel = ViewModelProviders.of(act)
                 .get(PasswordViewModel::class.java)
                 .also { act.appComponent.inject(it) }
-                .also { it.state.observe(this, Observer { onStateChanged(it) }) }
+                .also { it.state.observe(this, Observer { onStateChanged(it); it?.log() }) }
+                .also { it.process.observe(this, Observer { progress.visibilityCondition(it) }) }
+                .also { it.getDefaultState() }
     }
 
     private fun onStateChanged(state: ViewModelState?) = when (state) {
-        is PasswordIsCorrect -> activity?.let { MainActivity.start(it) }
-        else -> log(state.toString())
+        is PasswordNew -> textLayoutPassword.hint = state.hint
+        is PasswordConfirm -> {
+            editTextPassword.text = null
+            textLayoutPassword.hint = state.hint
+        }
+        is PasswordIncorrect -> {
+            if (state.hint.isNotEmpty()) textLayoutPassword.hint = state.hint
+            textLayoutPassword.error = state.error
+        }
+        PasswordCorrect -> activity?.let { MainActivity.start(it) }
+        is StateError -> textLayoutPassword.error = state.throwable.message
+        else -> state?.log()
     }
 
 }

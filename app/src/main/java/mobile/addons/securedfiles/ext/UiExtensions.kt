@@ -18,6 +18,12 @@ fun log(message: String, tag: String = "LOG") {
     }
 }
 
+fun View.visibilityCondition(isVisible: Boolean?) = if (isVisible == true) show() else hide()
+
+fun View.show() = let { visibility = View.VISIBLE }
+
+fun View.hide() = let { visibility = View.INVISIBLE }
+
 fun View.gone() = let { visibility = View.GONE }
 
 fun ViewFlipper.placeholder() = let { displayedChild = 0 } // show empty dir placeholder

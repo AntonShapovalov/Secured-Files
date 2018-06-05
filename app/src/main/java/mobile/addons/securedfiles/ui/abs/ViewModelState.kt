@@ -1,6 +1,7 @@
 package mobile.addons.securedfiles.ui.abs
 
 import android.arch.lifecycle.MutableLiveData
+import mobile.addons.securedfiles.ext.log
 import mobile.addons.securedfiles.ui.add.DownloadItem
 import mobile.addons.securedfiles.ui.main.InternalItem
 
@@ -17,7 +18,11 @@ data class StateError(val throwable: Throwable) : ViewModelState()
 data class InternalFilesLoaded(val files: List<InternalItem>) : ViewModelState()
 data class DownloadFilesLoaded(val files: List<DownloadItem>) : ViewModelState()
 
-object PasswordIsCorrect : ViewModelState()
+object PasswordCorrect : ViewModelState()
+object PasswordCheck : ViewModelState()
+class PasswordNew(val hint: String) : ViewModelState()
+class PasswordIncorrect(val error: String, val hint: String = "") : ViewModelState()
+class PasswordConfirm(val newPassword: CharArray, val hint: String) : ViewModelState()
 
 /**
  * ViewModelState LiveData - to init default state value
@@ -26,4 +31,8 @@ class StateLiveData(state: ViewModelState = StateIdle) : MutableLiveData<ViewMod
     init {
         value = state
     }
+}
+
+fun ViewModelState.log() {
+    log("state = ${this.javaClass.simpleName}")
 }
