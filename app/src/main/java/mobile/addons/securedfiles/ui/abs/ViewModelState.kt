@@ -1,6 +1,7 @@
 package mobile.addons.securedfiles.ui.abs
 
 import android.arch.lifecycle.MutableLiveData
+import mobile.addons.securedfiles.R
 import mobile.addons.securedfiles.ext.log
 import mobile.addons.securedfiles.ui.add.DownloadItem
 import mobile.addons.securedfiles.ui.main.InternalItem
@@ -20,6 +21,7 @@ data class DownloadFilesLoaded(val files: List<DownloadItem>) : ViewModelState()
 
 object PasswordCorrect : ViewModelState()
 object PasswordCheck : ViewModelState()
+class PasswordChange(val hintId: Int = R.string.password_fragment_hint_change) : ViewModelState()
 class PasswordNew(val hint: String) : ViewModelState()
 class PasswordIncorrect(val error: String, val hint: String = "") : ViewModelState()
 class PasswordConfirm(val newPassword: CharArray, val hint: String) : ViewModelState()

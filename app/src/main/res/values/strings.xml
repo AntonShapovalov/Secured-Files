@@ -16,10 +16,11 @@
     <string name="password_fragment_hint">Password</string>
     <string name="password_fragment_hint_set_new">Set new password</string>
     <string name="password_fragment_hint_confirm">Confirm new password</string>
+    <string name="password_fragment_hint_change">Current password</string>
     <!-- error messages -->
     <string name="error_message_files">Failed to load files</string>
     <string name="error_permissions">Permissions Error</string>
     <string name="error_pass_to_short">Password is too short</string>
-    <string name="error_pass_not_match">Passwords do not match</string>
+    <string name="error_pass_not_match">Passwords do not match, please set both again</string>
     <string name="error_pass_incorrect">Incorrect password</string>
 </resources>

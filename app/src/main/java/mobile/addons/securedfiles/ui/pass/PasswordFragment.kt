@@ -38,11 +38,15 @@ class PasswordFragment : Fragment() {
                 .also { act.appComponent.inject(it) }
                 .also { it.state.observe(this, Observer { onStateChanged(it); it?.log() }) }
                 .also { it.process.observe(this, Observer { progress.visibilityCondition(it) }) }
-                .also { it.getDefaultState() }
+                .also { it.getInitialState() }
     }
 
     private fun onStateChanged(state: ViewModelState?) = when (state) {
-        is PasswordNew -> textLayoutPassword.hint = state.hint
+        is PasswordChange -> textLayoutPassword.hint = getString(state.hintId)
+        is PasswordNew -> {
+            editTextPassword.text = null
+            textLayoutPassword.hint = state.hint
+        }
         is PasswordConfirm -> {
             editTextPassword.text = null
             textLayoutPassword.hint = state.hint

@@ -25,12 +25,12 @@ class PasswordViewModel : ViewModel() {
     val state = StateLiveData()
     val process = MutableLiveData<Boolean>()
 
+    private lateinit var strategy: IPasswordStrategy
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
-    fun getDefaultState() {
-        if (state.value != StateIdle) return
-        val s = Observable.fromCallable { passManager.isPasswordEmpty() }
-                .map { if (it) PasswordNew(context.getString(R.string.password_fragment_hint_set_new)) else PasswordCheck }
+    fun getInitialState() {
+        if (state.value != StateIdle && state.value !is PasswordChange) return
+        val s = Observable.fromCallable { buildInitialState() }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { process.value = true }
@@ -43,7 +43,7 @@ class PasswordViewModel : ViewModel() {
         if (state.value == StateProgress) return
         val s = Observable.just(pass)
                 .filter { pass.isNotEmpty() }
-                .map { getPassState(it) }
+                .map { buildPasswordState(it) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { process.value = true }
@@ -52,35 +52,26 @@ class PasswordViewModel : ViewModel() {
         subscriptions.add(s)
     }
 
-    private fun getPassState(pass: CharArray): ViewModelState = when {
-        passManager.isPasswordEmpty() && (pass.isEmpty() || pass.size < 4) -> {
-            val error: String
-            val hint: String
-            if (state.value is PasswordConfirm) {
-                error = context.getString(R.string.error_pass_not_match)
-                hint = context.getString(R.string.password_fragment_hint_set_new)
-            } else {
-                error = context.getString(R.string.error_pass_to_short)
-                hint = ""
-            }
-            PasswordIncorrect(error, hint)
-        }
-        state.value is PasswordConfirm -> {
-            val s = state.value as PasswordConfirm
-            if (s.newPassword.contentEquals(pass)) {
-                passManager.savePassword(pass)
-                PasswordCorrect
-            } else {
-                val error = context.getString(R.string.error_pass_not_match)
-                val hint = context.getString(R.string.password_fragment_hint_set_new)
-                PasswordIncorrect(error, hint)
-            }
+    private fun buildInitialState(): ViewModelState = when {
+        state.value is PasswordChange -> {
+            strategy = PasswordChangeStrategy(context, passManager)
+            state.value ?: StateIdle
         }
         passManager.isPasswordEmpty() -> {
-            PasswordConfirm(pass.copyOf(), context.getString(R.string.password_fragment_hint_confirm))
+            strategy = PasswordEmptyStrategy(context, passManager)
+            PasswordNew(context.getString(R.string.password_fragment_hint_set_new))
         }
-        passManager.checkPassword(pass) -> PasswordCorrect
-        else -> PasswordIncorrect(context.getString(R.string.error_pass_incorrect))
+        else -> {
+            strategy = PasswordCheckStrategy(context, passManager)
+            PasswordCheck
+        }
+    }
+
+    private fun buildPasswordState(pass: CharArray): ViewModelState {
+        val currentState = state.value ?: return StateIdle
+        val res = strategy.getPasswordState(pass, currentState)
+        if (res is PasswordNew) strategy = PasswordEmptyStrategy(context, passManager)
+        return res
     }
 
     override fun onCleared() {
