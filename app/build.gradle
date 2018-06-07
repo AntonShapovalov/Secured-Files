@@ -14,6 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resValue "string", "file_provider_authorities", "${applicationId}.fileprovider"
     }
     buildTypes {
         release {

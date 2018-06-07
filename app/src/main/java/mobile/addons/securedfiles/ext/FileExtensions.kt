@@ -1,9 +1,12 @@
 package mobile.addons.securedfiles.ext
 
 import android.content.Context
+import android.content.Intent
 import android.os.Environment
 import android.os.Environment.DIRECTORY_DOWNLOADS
+import android.support.v4.content.FileProvider
 import android.webkit.MimeTypeMap
+import mobile.addons.securedfiles.R
 import mobile.addons.securedfiles.ui.main.ItemLoadError
 import mobile.addons.securedfiles.ui.main.ItemLoadState
 import mobile.addons.securedfiles.ui.main.ItemLoadSuccess
@@ -19,6 +22,21 @@ const val IMAGE_TYPE = "image"
 const val VIDEO_TYPE = "video"
 
 fun Context.internalDir() = File(filesDir, INTERNAL_DIR)
+
+fun Context.viewFile(file: File) {
+    val fileUri = FileProvider.getUriForFile(this, getString(R.string.file_provider_authorities), file)
+    val mimeType = contentResolver.getType(fileUri)
+    log("APK file uri = $fileUri, mimeType = $mimeType")
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        setDataAndType(fileUri, mimeType)
+    }
+    if (intent.resolveActivity(packageManager) != null) {
+        startActivity(intent)
+    } else {
+        log("Unable start intent: $intent")
+    }
+}
 
 fun Context.getInternalFiles(type: String): List<File> = internalDir()
         .also { if (!it.exists()) it.mkdir() }
