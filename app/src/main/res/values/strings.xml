@@ -20,7 +20,7 @@
     <!-- error messages -->
     <string name="error_message_files">Failed to load files</string>
     <string name="error_permissions">Permissions Error</string>
-    <string name="error_pass_to_short">Password is too short</string>
+    <string name="error_pass_to_short">Password is too short, min length is %d</string>
     <string name="error_pass_not_match">Passwords do not match, please set both again</string>
     <string name="error_pass_incorrect">Incorrect password</string>
 </resources>

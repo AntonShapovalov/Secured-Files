@@ -3,7 +3,6 @@ package mobile.addons.securedfiles.ui.main
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import mobile.addons.securedfiles.ext.appComponent
 import mobile.addons.securedfiles.ext.log
 import mobile.addons.securedfiles.ui.abs.FileListAdapter
 import mobile.addons.securedfiles.ui.abs.FileListFragment
@@ -25,7 +24,6 @@ class MainFragment : FileListFragment<InternalItem>() {
         val act = activity ?: return
         viewModel = ViewModelProviders.of(act)
                 .get(MainViewModel::class.java)
-                .also { act.appComponent.inject(it) }
                 .also { it.state.observe(this, Observer { onStateChanged(it) }) }
     }
 

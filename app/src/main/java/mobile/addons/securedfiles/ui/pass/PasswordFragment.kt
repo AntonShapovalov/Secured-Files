@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_password.*
 import mobile.addons.securedfiles.R
-import mobile.addons.securedfiles.ext.appComponent
 import mobile.addons.securedfiles.ext.visibilityCondition
 import mobile.addons.securedfiles.ui.abs.*
 import mobile.addons.securedfiles.ui.main.MainActivity
@@ -35,29 +34,25 @@ class PasswordFragment : Fragment() {
         val act = activity ?: return
         viewModel = ViewModelProviders.of(act)
                 .get(PasswordViewModel::class.java)
-                .also { act.appComponent.inject(it) }
                 .also { it.state.observe(this, Observer { onStateChanged(it); it?.log() }) }
                 .also { it.process.observe(this, Observer { progress.visibilityCondition(it) }) }
                 .also { it.getInitialState() }
     }
 
     private fun onStateChanged(state: ViewModelState?) = when (state) {
-        is PasswordChange -> textLayoutPassword.hint = getString(state.hintId)
-        is PasswordNew -> {
-            editTextPassword.text = null
-            textLayoutPassword.hint = state.hint
-        }
-        is PasswordConfirm -> {
-            editTextPassword.text = null
-            textLayoutPassword.hint = state.hint
-        }
-        is PasswordIncorrect -> {
-            if (state.hint.isNotEmpty()) textLayoutPassword.hint = state.hint
-            textLayoutPassword.error = state.error
-        }
+        is PasswordCheck -> updateUI(hint = state.hint)
+        is PasswordNew -> updateUI(hint = state.hint)
+        is PasswordConfirm -> updateUI(hint = state.hint)
+        is PasswordIncorrect -> updateUI(state.hint, state.error)
+        is StateError -> updateUI(error = state.throwable.message)
         PasswordCorrect -> activity?.let { MainActivity.start(it) }
-        is StateError -> textLayoutPassword.error = state.throwable.message
         else -> state?.log()
+    }
+
+    private fun updateUI(hint: String? = null, error: String? = null) {
+        editTextPassword.text = null
+        hint?.let { textLayoutPassword.hint = it }
+        error?.let { textLayoutPassword.error = it }
     }
 
 }

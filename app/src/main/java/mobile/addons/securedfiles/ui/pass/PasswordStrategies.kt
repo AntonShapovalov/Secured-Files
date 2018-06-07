@@ -5,6 +5,8 @@ import mobile.addons.securedfiles.R
 import mobile.addons.securedfiles.pass.PasswordManager
 import mobile.addons.securedfiles.ui.abs.*
 
+const val PASSWORD_MIN_LENGTH = 4
+
 /**
  * All kinds of password's operations:
  * 1. set new pass on first start
@@ -20,15 +22,15 @@ interface IPasswordStrategy {
  */
 class PasswordEmptyStrategy(private val context: Context, private val passManager: PasswordManager) : IPasswordStrategy {
     override fun getPasswordState(pass: CharArray, currentState: ViewModelState): ViewModelState = when {
-        pass.isEmpty() || pass.size < 4 -> {
+        pass.size < PASSWORD_MIN_LENGTH -> {
             val error: String
-            val hint: String
+            val hint: String?
             if (currentState is PasswordConfirm) {
                 error = context.getString(R.string.error_pass_not_match)
                 hint = context.getString(R.string.password_fragment_hint_set_new)
             } else {
-                error = context.getString(R.string.error_pass_to_short)
-                hint = ""
+                error = context.getString(R.string.error_pass_to_short, PASSWORD_MIN_LENGTH)
+                hint = null
             }
             PasswordIncorrect(error, hint)
         }
@@ -51,6 +53,7 @@ class PasswordEmptyStrategy(private val context: Context, private val passManage
  */
 class PasswordCheckStrategy(private val context: Context, private val passManager: PasswordManager) : IPasswordStrategy {
     override fun getPasswordState(pass: CharArray, currentState: ViewModelState): ViewModelState = when {
+        pass.size < PASSWORD_MIN_LENGTH -> PasswordIncorrect(context.getString(R.string.error_pass_incorrect))
         passManager.checkPassword(pass) -> PasswordCorrect
         else -> PasswordIncorrect(context.getString(R.string.error_pass_incorrect))
     }
@@ -61,6 +64,7 @@ class PasswordCheckStrategy(private val context: Context, private val passManage
  */
 class PasswordChangeStrategy(private val context: Context, private val passManager: PasswordManager) : IPasswordStrategy {
     override fun getPasswordState(pass: CharArray, currentState: ViewModelState): ViewModelState = when {
+        pass.size < PASSWORD_MIN_LENGTH -> PasswordIncorrect(context.getString(R.string.error_pass_incorrect))
         passManager.checkPassword(pass) -> PasswordNew(context.getString(R.string.password_fragment_hint_set_new))
         else -> PasswordIncorrect(context.getString(R.string.error_pass_incorrect))
     }

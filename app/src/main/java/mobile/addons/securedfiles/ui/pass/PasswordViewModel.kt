@@ -29,7 +29,7 @@ class PasswordViewModel : ViewModel() {
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
     fun getInitialState() {
-        if (state.value != StateIdle && state.value !is PasswordChange) return
+        if (state.value != StateIdle && state.value != PasswordChange) return
         val s = Observable.fromCallable { buildInitialState() }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -53,9 +53,9 @@ class PasswordViewModel : ViewModel() {
     }
 
     private fun buildInitialState(): ViewModelState = when {
-        state.value is PasswordChange -> {
+        state.value == PasswordChange -> {
             strategy = PasswordChangeStrategy(context, passManager)
-            state.value ?: StateIdle
+            PasswordCheck(context.getString(R.string.password_fragment_hint_change))
         }
         passManager.isPasswordEmpty() -> {
             strategy = PasswordEmptyStrategy(context, passManager)
@@ -63,7 +63,7 @@ class PasswordViewModel : ViewModel() {
         }
         else -> {
             strategy = PasswordCheckStrategy(context, passManager)
-            PasswordCheck
+            PasswordCheck(context.getString(R.string.password_fragment_hint))
         }
     }
 

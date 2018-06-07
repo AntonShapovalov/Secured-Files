@@ -30,16 +30,14 @@ class PasswordActivity : AppCompatActivity() {
         val isChangePassword = intent.getBooleanExtra(IS_CHANGE_PASSWORD_KEY, false)
         if (isChangePassword) {
             setSupportActionBar(toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setTitle(R.string.password_activity_title)
         } else {
             appbar.gone()
         }
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(true)
-            it.setTitle(R.string.password_activity_title)
-        }
         viewModel = ViewModelProviders.of(this).get(PasswordViewModel::class.java)
                 .also { appComponent.inject(it) }
-                .also { if (isChangePassword) it.state.value = PasswordChange() }
+                .also { if (isChangePassword) it.state.value = PasswordChange }
         if (savedInstanceState == null) {
             val fragment = getFragment(PASSWORD_FRAGMENT_TAG) ?: PasswordFragment()
             addFragment(R.id.fragment_container, fragment, PASSWORD_FRAGMENT_TAG)
