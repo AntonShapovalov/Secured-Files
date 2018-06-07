@@ -30,7 +30,7 @@ fun ViewFlipper.placeholder() = let { displayedChild = 0 } // show empty dir pla
 
 fun ViewFlipper.progress() = let { displayedChild = 1 } // show progress
 
-fun ViewFlipper.empty() = let { displayedChild = 2 } // hide all when list loaded
+fun ViewFlipper.default() = let { displayedChild = 2 } // hide all when list loaded
 
 fun RecyclerView.initList(adapter: RecyclerView.Adapter<*>) {
     val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

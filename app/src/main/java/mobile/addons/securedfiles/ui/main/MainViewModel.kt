@@ -66,6 +66,18 @@ class MainViewModel : ViewModel() {
     }
 
     /**
+     * Delete file from internal directory and reload list
+     */
+    fun deleteFile(file: File) {
+        val s = Observable.fromCallable { file.delete() }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { state.value = StateProgress }
+                .subscribe({ loadFiles() }, { state.value = StateError(it) })
+        subscriptions.add(s)
+    }
+
+    /**
      * Load files from selected directory and notify [MainFragment]
      */
     private fun loadFiles() {

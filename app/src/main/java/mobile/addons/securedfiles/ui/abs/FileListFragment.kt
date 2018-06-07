@@ -30,15 +30,15 @@ abstract class FileListFragment<T : FileItem> : Fragment() {
 
     open fun onStateChanged(state: ViewModelState?) = when (state) {
         is StateProgress -> flipper.progress()
-        is StateError -> showError(state.throwable, R.string.error_message_files, { flipper.empty() })
-        else -> flipper.empty()
+        is StateError -> showError(state.throwable, R.string.error_message_files, { flipper.default() })
+        else -> flipper.default()
     }
 
     protected fun setFiles(files: List<T>) = if (files.isEmpty()) {
         flipper.placeholder()
         adapter.clearItems()
     } else {
-        flipper.empty()
+        flipper.default()
         adapter.setItems(files)
     }
 

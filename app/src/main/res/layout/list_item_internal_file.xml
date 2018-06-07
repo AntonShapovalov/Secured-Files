@@ -57,9 +57,13 @@
             android:layout_width="24dp"
             android:layout_height="24dp" />
 
-        <View
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
+        <ImageView
+            android:id="@+id/imageDelete"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_clear"
+            tools:ignore="ContentDescription" />
     </ViewFlipper>
 
     <View

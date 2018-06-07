@@ -52,7 +52,7 @@ fun getDownloadFiles(): List<File> = Environment
 
 fun File.getType(): String {
     if (extension.isEmpty()) return DOCUMENTS_TYPE
-    val fileType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+    val fileType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase())
     return when {
         fileType == null -> DOCUMENTS_TYPE
         fileType.startsWith(AUDIO_TYPE) -> AUDIO_TYPE
