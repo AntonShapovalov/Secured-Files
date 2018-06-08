@@ -33,7 +33,7 @@ class MainListAdapter(onItemClick: (InternalItem) -> Unit, private val onItemDel
         view.textName.text = file.name
         view.textDate.text = DateUtils.getRelativeTimeSpanString(file.lastModified())
         view.setOnClickListener { onItemClick(item) }
-        view.imageDelete.setOnClickListener { onItemDelete(file) }
+        view.buttonDelete.setOnClickListener { onItemDelete(file) }
     }
 
 }

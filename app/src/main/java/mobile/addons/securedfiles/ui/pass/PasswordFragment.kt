@@ -25,8 +25,9 @@ class PasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        buttonOk.setOnClickListener { viewModel.getPasswordState(editTextPassword.text.toString().toCharArray()) }
+        buttonOk.setOnClickListener { getPasswordState() }
         editTextPassword.addTextChangedListener(PasswordTextWatcher(textLayoutPassword))
+        editTextPassword.setOnEditorActionListener(PasswordEditorActionListener { getPasswordState() })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -37,6 +38,10 @@ class PasswordFragment : Fragment() {
                 .also { it.state.observe(this, Observer { onStateChanged(it); it?.log() }) }
                 .also { it.process.observe(this, Observer { progress.visibilityCondition(it) }) }
                 .also { it.getInitialState() }
+    }
+
+    private fun getPasswordState() {
+        viewModel.getPasswordState(editTextPassword.text.toString().toCharArray())
     }
 
     private fun onStateChanged(state: ViewModelState?) = when (state) {

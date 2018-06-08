@@ -57,12 +57,12 @@
             android:layout_width="24dp"
             android:layout_height="24dp" />
 
-        <ImageView
-            android:id="@+id/imageDelete"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_clear"
+        <ImageButton
+            android:id="@+id/buttonDelete"
+            style="@style/Widget.AppCompat.ActionButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_clear_small"
             tools:ignore="ContentDescription" />
     </ViewFlipper>
 

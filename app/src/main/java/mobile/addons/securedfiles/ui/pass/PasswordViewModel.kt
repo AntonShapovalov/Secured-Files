@@ -40,7 +40,7 @@ class PasswordViewModel : ViewModel() {
     }
 
     fun getPasswordState(pass: CharArray) {
-        if (state.value == StateProgress) return
+        if (process.value == true) return
         val s = Observable.just(pass)
                 .filter { pass.isNotEmpty() }
                 .map { buildPasswordState(it) }
