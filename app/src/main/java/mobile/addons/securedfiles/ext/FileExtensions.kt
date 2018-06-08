@@ -63,7 +63,7 @@ fun File.getType(): String {
 }
 
 fun File.tryCopyTo(destDir: File): ItemLoadState {
-    val destFile = File(destDir, name)
+    val destFile = File(destDir, name.extToLoverCase())
     return try {
         copyTo(destFile)
         log("copied file $name (${length() / 1024} KB) into ${destDir.name}")
@@ -76,5 +76,16 @@ fun File.tryCopyTo(destDir: File): ItemLoadState {
             if (destFile.exists()) destFile.delete()
             ItemLoadError(e.message ?: "Unable copy file $name")
         }
+    }
+}
+
+fun String.extToLoverCase(): String {
+    val i = lastIndexOf('.')
+    return if (i > -1) {
+        val name = substring(0, i)
+        val ext = substring(i).toLowerCase()
+        "$name$ext"
+    } else {
+        this
     }
 }
