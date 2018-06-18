@@ -24,6 +24,7 @@ class AddListAdapter(onItemClick: (DownloadItem) -> Unit) : FileListAdapter<Down
         val view = holder.itemView
         view.textName.text = file.name
         view.textDate.text = DateUtils.getRelativeTimeSpanString(file.lastModified())
+        view.checkBox.isChecked = item.isChecked
         view.checkBox.setOnClickListener { setChecked(item, view.checkBox) }
         view.setOnClickListener { setChecked(item, view.checkBox) }
     }

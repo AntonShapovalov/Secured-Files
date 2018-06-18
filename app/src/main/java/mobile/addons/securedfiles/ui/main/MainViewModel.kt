@@ -27,11 +27,13 @@ class MainViewModel : ViewModel() {
     val title = MutableLiveData<String>()
     var type = DOCUMENTS_TYPE
     val state = StateLiveData()
+    var navId = 0 // to restore state from savedInstanceState
 
     private val subscriptions: CompositeSubscription = CompositeSubscription()
 
-    fun setDefaultState() {
-        if (title.value == null && state.value == StateIdle) onNavItemSelected(R.string.nav_title_doc)
+    fun setInitialState(navId: Int) {
+        if (state.value != StateIdle) return
+        onNavItemSelected(navId)
         val s = fileManager.queueSubject.filter { it == type }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ loadFiles() }, { it.printStackTrace() })
@@ -62,6 +64,7 @@ class MainViewModel : ViewModel() {
             }
         }
         title.value = context.getString(titleId)
+        this.navId = navId
         loadFiles()
     }
 
@@ -79,13 +82,14 @@ class MainViewModel : ViewModel() {
 
     /**
      * Load files from selected directory and notify [MainFragment]
+     * If file is very large (video) - it can be in both lists, so we filter internal items while file is in coping
      */
     private fun loadFiles() {
         val queueItems = Observable.fromCallable { fileManager.getQueueItems(type) }
                 .doOnNext { logItems("queueItems", it) }
         val internalItems = Observable.fromCallable { context.getInternalFiles(type).map { InternalItem(it, type) } }
                 .doOnNext { logItems("internalItems", it) }
-        val s = Observable.zip(queueItems, internalItems, { q, i -> q.toMutableList().apply { addAll(i) }.toList() })
+        val s = Observable.zip(queueItems, internalItems, { q, i -> deleteDuplicates(q, i) })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { state.value = StateProgress }
@@ -98,8 +102,15 @@ class MainViewModel : ViewModel() {
         items.forEach { log("file=${it.file.name},${it.loadState.javaClass.simpleName}") }
     }
 
+    private fun deleteDuplicates(q: List<InternalItem>, i: List<InternalItem>): List<InternalItem> {
+        val qNames = q.map { it.file.name }.toHashSet()
+        val iFiltered = i.filter { !qNames.contains(it.file.name) }
+        return q.toMutableList().apply { addAll(iFiltered) }.toList()
+    }
+
     override fun onCleared() {
         super.onCleared()
+        log("MainViewModel:onCleared")
         subscriptions.unsubscribe()
     }
 

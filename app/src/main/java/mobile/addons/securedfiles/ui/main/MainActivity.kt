@@ -15,7 +15,10 @@ import android.view.WindowManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.coordinator_main.*
 import mobile.addons.securedfiles.R
-import mobile.addons.securedfiles.ext.*
+import mobile.addons.securedfiles.ext.MAIN_FRAGMENT_TAG
+import mobile.addons.securedfiles.ext.addFragment
+import mobile.addons.securedfiles.ext.appComponent
+import mobile.addons.securedfiles.ext.getFragment
 import mobile.addons.securedfiles.ui.add.AddActivity
 import mobile.addons.securedfiles.ui.pass.PasswordActivity
 
@@ -25,7 +28,8 @@ import mobile.addons.securedfiles.ui.pass.PasswordActivity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
-        fun start(context: Context){
+        const val NAV_ID_KEY = "NAV_ID_KEY"
+        fun start(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context.startActivity(intent)
@@ -52,11 +56,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
         if (savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.nav_docs)
-            viewModel.setDefaultState()
-            addFragment(R.id.fragment_container, getFragment(MAIN_FRAGMENT_TAG) ?: MainFragment(), MAIN_FRAGMENT_TAG)
+            viewModel.setInitialState(R.string.nav_title_doc)
+            val fragment = getFragment(MAIN_FRAGMENT_TAG) ?: MainFragment()
+            addFragment(R.id.fragment_container, fragment, MAIN_FRAGMENT_TAG)
+        } else {
+            viewModel.setInitialState(savedInstanceState.getInt(NAV_ID_KEY, R.string.nav_title_doc))
         }
 
         fab.setOnClickListener { startActivity(Intent(this, AddActivity::class.java)) }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putInt(NAV_ID_KEY, viewModel.navId)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onBackPressed() {
