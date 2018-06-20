@@ -4,7 +4,7 @@
 
 ![link](../../../img/blob/master/sfiles/pass_screen.png) &nbsp;&nbsp;&nbsp;&nbsp; ![link](../../../img/blob/master/sfiles/nav_drawer.png) &nbsp;&nbsp;&nbsp;&nbsp; ![link](../../../img/blob/master/sfiles/main_screen.png)
 
-#### How it works:
+#### How it works
 
 1. Set password on first launch 
 2. Click floating button `add`
