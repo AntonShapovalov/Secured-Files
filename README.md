@@ -1,15 +1,16 @@
 # Android-SecuredFiles
 
-#### Android application allows copying files from Downloads dir into internal dir and protects access with password
+#### Android application allows copy files from Downloads dir into internal dir and protects access with password
 
 ![link](../../../img/blob/master/sfiles/pass_screen.png) &nbsp;&nbsp;&nbsp;&nbsp; ![link](../../../img/blob/master/sfiles/nav_drawer.png) &nbsp;&nbsp;&nbsp;&nbsp; ![link](../../../img/blob/master/sfiles/main_screen.png)
 
 #### How it works:
 
-1. Set password on first launch; password can be changed later via operation menu
+1. Set password on first launch 
 2. Click floating button `add`
 3. Select files from Downloads dir and click `done`
 4. Use Navigation Panel to filter files by types
+5. Use Operation menu to change password
 
 #### Security notes
 
