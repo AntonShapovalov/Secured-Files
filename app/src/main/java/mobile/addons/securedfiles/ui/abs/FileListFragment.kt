@@ -30,7 +30,7 @@ abstract class FileListFragment<T : FileItem> : Fragment() {
 
     open fun onStateChanged(state: ViewModelState?) = when (state) {
         is StateProgress -> flipper.progress()
-        is StateError -> showError(state.throwable, R.string.error_message_files, { flipper.default() })
+        is StateError -> showError(state.throwable, R.string.error_message_files) { flipper.default() }
         else -> flipper.default()
     }
 

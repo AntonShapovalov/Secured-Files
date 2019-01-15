@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
                 .also { appComponent.inject(it) }
-                .also { it.title.observe(this, Observer { supportActionBar?.title = it }) }
+                .also { vm -> vm.title.observe(this, Observer { supportActionBar?.title = it }) }
 
         ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close).also {
             drawer.addDrawerListener(it)

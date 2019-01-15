@@ -35,8 +35,8 @@ class PasswordFragment : Fragment() {
         val act = activity ?: return
         viewModel = ViewModelProviders.of(act)
                 .get(PasswordViewModel::class.java)
-                .also { it.state.observe(this, Observer { onStateChanged(it); it?.log() }) }
-                .also { it.process.observe(this, Observer { progress.visibilityCondition(it) }) }
+                .also { vm -> vm.state.observe(this, Observer { onStateChanged(it); it?.log() }) }
+                .also { vm -> vm.process.observe(this, Observer { progress.visibilityCondition(it) }) }
                 .also { it.getInitialState() }
     }
 

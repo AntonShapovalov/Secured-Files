@@ -52,7 +52,7 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun onPermissionError(throwable: Throwable) {
-        showError(throwable, R.string.error_permissions, { finish() })
+        showError(throwable, R.string.error_permissions) { finish() }
     }
 
     private fun setContent(savedInstanceState: Bundle?) {

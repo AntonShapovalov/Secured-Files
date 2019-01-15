@@ -29,7 +29,7 @@ class AddViewModel : ViewModel() {
     fun loadFiles() {
         if (state.value is DownloadFilesLoaded) return
         val s = Observable.fromCallable { getDownloadFiles() }
-                .map { it.map { DownloadItem(it) } }
+                .map { list -> list.map { DownloadItem(it) } }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { state.value = StateProgress }

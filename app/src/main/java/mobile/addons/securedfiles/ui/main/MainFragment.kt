@@ -24,7 +24,7 @@ class MainFragment : FileListFragment<InternalItem>() {
         val act = activity ?: return
         viewModel = ViewModelProviders.of(act)
                 .get(MainViewModel::class.java)
-                .also { it.state.observe(this, Observer { onStateChanged(it) }) }
+                .also { vm -> vm.state.observe(this, Observer { onStateChanged(it) }) }
     }
 
     override fun onStateChanged(state: ViewModelState?) = when (state) {

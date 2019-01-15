@@ -24,7 +24,7 @@ class AddFragment : FileListFragment<DownloadItem>() {
         viewModel = ViewModelProviders.of(act)
                 .get(AddViewModel::class.java)
                 .also { act.appComponent.inject(it) }
-                .also { it.state.observe(this, Observer { onStateChanged(it) }) }
+                .also { vm -> vm.state.observe(this, Observer { onStateChanged(it) }) }
                 .also { it.loadFiles() }
     }
 

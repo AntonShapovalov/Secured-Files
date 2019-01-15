@@ -25,7 +25,7 @@ class MainViewModel : ViewModel() {
     @Inject lateinit var fileManager: FileManager
 
     val title = MutableLiveData<String>()
-    var type = DOCUMENTS_TYPE
+    private var type = DOCUMENTS_TYPE
     val state = StateLiveData()
     var navId = 0 // to restore state from savedInstanceState
 
@@ -89,7 +89,7 @@ class MainViewModel : ViewModel() {
                 .doOnNext { logItems("queueItems", it) }
         val internalItems = Observable.fromCallable { context.getInternalFiles(type).map { InternalItem(it, type) } }
                 .doOnNext { logItems("internalItems", it) }
-        val s = Observable.zip(queueItems, internalItems, { q, i -> deleteDuplicates(q, i) })
+        val s = Observable.zip(queueItems, internalItems) { q, i -> deleteDuplicates(q, i) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { state.value = StateProgress }
