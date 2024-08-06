@@ -19,7 +19,7 @@
 
 #### How to install
 
-Please use [app/release/app-release.apk](./app/release/app-release.apk) file
+Please use [app/release/app-release.apk](./app/release/app-release.apk) file.
 
 #### Used language and libraries
  * [PBE](http://www.crypto-it.net/eng/theory/pbe.html) - password-based encryption
