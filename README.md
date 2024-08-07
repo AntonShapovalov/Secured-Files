@@ -17,8 +17,8 @@ Android application allows to copy files from Downloads into internal app direct
 
 #### Security notes
 
-1. Application encrypts only user password and does not encrypt file's content, so `root` user can access files.
-2. There is no way to restore password because application does not store plain password text.
+- Application encrypts only user password and does not encrypt file's content, so `root` user can access files.
+- There is no way to restore password because application does not store plain password text.
 
 #### How to install
 
