@@ -1,6 +1,6 @@
 # Android-SecuredFiles
 
-Android application allows to copy files from Downloads into internal app directory and protects access with password.
+Android application copies files from Downloads into internal app directory and protects access with password.
 
 #### Screens
 
